@@ -10,10 +10,10 @@ class FractorMapGenerator(MapGenerator):
 
     def generateMap(self) -> np.ndarray:
         img_size = (self.width + self.height) / 2
-        size_ratio = 2
+        size_ratio = 1
         freq_ratio = img_size * 5
 
-        self.img = Image.new(mode='RGB', color=(127, 127, 127), size=(self.width, self.height))
+        self.img = Image.new(mode='RGB', color=(127, 127, 127), size=(self.height, self.width))
         draw = ImageDraw.Draw(self.img, 'RGBA')
 
         for i in range(5):
@@ -22,7 +22,7 @@ class FractorMapGenerator(MapGenerator):
 
             for _ in range(int(total_circle)):
                 color = (0, 0, 0, 127) if self.rand.rand() > self.p else (255, 255, 255, 127)
-                c = (self.rand.randint(self.width), self.rand.randint(self.height))
+                c = (self.rand.randint(self.height), self.rand.randint(self.width))
 
                 x1 = c[0] - circle_size
                 y1 = c[1] - circle_size
@@ -49,10 +49,7 @@ class FractorMapGenerator(MapGenerator):
         
         X[X == 0] = 1
         X[X == 255] = 0
-        
-
-        print(X)
-        
+                
         return X
 
     def saveImg(self, i=0):

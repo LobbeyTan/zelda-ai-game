@@ -16,8 +16,8 @@ class ZeldaProblem(Problem):
     """
     def __init__(self):
         super().__init__()
-        self._width = 20
-        self._height = 20
+        self._width = 36
+        self._height = 64
         
         self._prob = {"empty": 0.58, "solid":0.3, "player":0.02, "key": 0.02, "door": 0.02, "bat": 0.02, "scorpion": 0.02, "spider": 0.02, "path": 0.0}
         self._border_tile = "solid"

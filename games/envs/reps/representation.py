@@ -41,7 +41,7 @@ class Representation:
     """
     def reset(self, width, height, prob):
         if self._random_start or self._old_map is None:
-            self.map_generator = CellularAutomata(self._random, width, height)
+            self.map_generator = FractorMapGenerator(self._random, width, height)
             
             # self._map = gen_random_map(self._random, width, height, prob)
             self._map = self.map_generator.getMap()
