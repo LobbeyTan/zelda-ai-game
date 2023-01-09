@@ -78,16 +78,13 @@ class Astar:
 
     def getPath(self, open_segment, open_value, target, player):
         # Initialize close list
-        closed_segment = []
+        closed_segment = set()
 
         while open_segment:
-            print(len(open_segment))
-            if len(open_segment) > 2000:
-                return []
             current_segment_index = open_value.index(min(open_value))
             current_segment = open_segment.pop(current_segment_index)
             current_value = open_value.pop(current_segment_index)
-            closed_segment.append(current_segment)
+            closed_segment.add((current_segment.position.x, current_segment.position.y))
             # print(len(open_segment))
             # print((self.getDistance(target, player)) * 2)
             # if len(open_segment) > (self.getDistance(target, player) * 2):
@@ -118,17 +115,15 @@ class Astar:
             for possible_move in possible_moves:
                 skip = False
                 segment = Segment(position=possible_move, parent=current_segment, length=current_segment.length + 1, value=current_segment.length + self.getDistance(start=possible_move,target=target))
-                for close_segmenT in closed_segment:
-                    if close_segmenT.position == segment.position:
-                        skip = True
-                        break
+                if (segment.position.x, segment.position.y) in closed_segment:
+                    skip = True
                 
                 if skip:
                     continue
 
                 for open_segmenT in open_segment:
                     if open_segmenT.position == segment.position:
-                        if open_segmenT.value < segment.value:
+                        if open_segmenT.value <= segment.value:
                             skip = True
                             break
                 
@@ -164,7 +159,6 @@ class Astar:
         parent = Segment(position=player, length=0)
         open_segment = [Segment(position=x, parent=parent, value=self.getDistance(start=x,target=target), length=1) for x in starting_possible_moves]
         open_value = [x.value for x in open_segment]
-
         # Get the path to target
         path = Path(self.getPath(open_segment, open_value, target, player))
 
