@@ -1,6 +1,6 @@
 from gym.utils import seeding
 from games.envs.helper import gen_random_map
-from games.envs.cellular_automata import generate_CA_map
+from games.envs.generators import *
 import numpy as np
 
 """
@@ -41,8 +41,11 @@ class Representation:
     """
     def reset(self, width, height, prob):
         if self._random_start or self._old_map is None:
+            self.map_generator = CellularAutomata(self._random, width, height)
+            
             # self._map = gen_random_map(self._random, width, height, prob)
-            self._map = generate_CA_map(self._random, width, height, prob)
+            self._map = self.map_generator.getMap()
+            
             self._old_map = self._map.copy()
         else:
             self._map = self._old_map.copy()
