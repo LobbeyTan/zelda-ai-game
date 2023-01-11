@@ -134,3 +134,17 @@ class Player:
         loss = self.update_Q_online(td_est, td_tgt)
 
         return (td_est.mean().item(), loss)
+
+    @torch.no_grad()
+    def predict(self, state: np.ndarray):
+        state = torch.tensor(state).to(self.device)
+        action_values = self.net(state, model='online')
+        action_idx = torch.argmax(action_values, axis=1).item()
+        
+        return action_idx
+    
+    def load(self, path):
+        save_dict = torch.load(path)
+        
+        self.net.load_state_dict(save_dict['model'])
+        self.net.eval()

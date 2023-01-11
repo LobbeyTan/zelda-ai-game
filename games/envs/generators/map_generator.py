@@ -117,8 +117,8 @@ class MapGenerator:
 
     def getRandomTile(self, tile_type=0) -> Coord:
         while (True):
-            x = np.random.choice(range(self.width))
-            y = np.random.choice(range(self.height))
+            x = self.rand.choice(range(self.width))
+            y = self.rand.choice(range(self.height))
 
             if (self.map[x][y] == tile_type):
                 return Coord(x, y)

@@ -24,7 +24,7 @@ def playZeldaWithAstar():
 def playZeldaWithDDQN():
     env = ZeldaReinforceEnv()
     env.seed(2023)
-    
+
     state = env.reset(new_map=True)
 
     use_cuda = torch.cuda.is_available()
@@ -38,7 +38,7 @@ def playZeldaWithDDQN():
 
     logger = MetricLogger(save_dir)
 
-    episodes = 40000
+    episodes = 100000
     for e in range(episodes):
 
         # Play the game!
@@ -57,7 +57,7 @@ def playZeldaWithDDQN():
             q, loss = player.learn()
 
             # Logging
-            logger.log_step(reward, loss, q)
+            logger.log_step(reward, loss, q, env.key is None and env.door is None)
 
             # Update state
             state = next_state
@@ -71,23 +71,41 @@ def playZeldaWithDDQN():
 
         if e % 20 == 0:
             logger.record(episode=e, epsilon=player.exploration_rate, step=player.curr_step)
-            
+
+    player.save()
+
 
 def test():
     env = ZeldaReinforceEnv()
     env.seed(2023)
     env.reset(new_map=True)
-    
+
     for _ in range(10000):
         next_state, reward, done = env.step(env._prob._random.choice(4))
-        
+        env.render()
+
         time.sleep(0.25)
         if (done or _ % 20 == 0):
             env.reset()
+            
+def playWithTrainRL():
+    env = ZeldaReinforceEnv()
+    env.seed(2023)
+    state = env.reset(new_map=True)
+    
+    player = Player(n_states=env._map.size, n_actions=4, rand=env._prob._random)
+    player.load('./checkpoint/2023-01-11T12-32-17/model/mario_net_4.chkpt')
+
+    for _ in range(10000):
+        action = player.act(state)
         
-        
+        next_state, reward, done = env.step(action)
+        env.render()
+
+        # time.sleep(0.25)
+        if (done or _ % 20 == 0):
+            env.reset()
 
 
 if __name__ == '__main__':
     playZeldaWithDDQN()
-    # env.reset()
