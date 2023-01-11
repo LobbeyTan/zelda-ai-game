@@ -1,3 +1,4 @@
 /.vscode
 /temp*.png
 *.pyc
+/checkpoint

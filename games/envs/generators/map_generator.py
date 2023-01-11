@@ -152,16 +152,16 @@ class MapGenerator:
         self.map[key.x][key.y] = 3
 
         # Populate bat
-        for _ in range(10):
+        for _ in range(2):
             coord = self.getRandomTile()
             self.map[coord.x][coord.y] = 5
 
         # Populate scorpion
-        for _ in range(10):
+        for _ in range(2):
             coord = self.getRandomTile()
             self.map[coord.x][coord.y] = 6
 
         # Populate spider
-        for _ in range(10):
+        for _ in range(2):
             coord = self.getRandomTile()
             self.map[coord.x][coord.y] = 7

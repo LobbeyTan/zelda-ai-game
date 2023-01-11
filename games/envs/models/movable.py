@@ -6,17 +6,18 @@ from games.envs.models.constant import *
 
 class Movable:
 
-    def __init__(self, map: np.ndarray, coord: Coord, directions: list[Direction], prob_type: ProbType) -> None:
+    def __init__(self, map: np.ndarray, coord: Coord, directions: list[Direction], prob_type: ProbType, deterministic=True) -> None:
         self.seed()
-
+        self.deterministic = deterministic
         self.map = map
 
         self.last_coord: Coord = None
+        self.initial_coord: Coord = coord
         self.current_coord: Coord = coord
 
         self.possible_directions: list[Direction] = directions
         self.prob_type: ProbType = prob_type
-        self.dir_index = self._random.randint(0, len(self.possible_directions))
+        self.dir_index = 0 if self.deterministic else self._random.randint(0, len(self.possible_directions))
         self.direction: Direction = self.possible_directions[self.dir_index]
 
     def isValidMove(self) -> bool:
@@ -61,3 +62,10 @@ class Movable:
     def isWithinBound(self, dx, dy):
         width, height = self.map.shape
         return dx >= 0 and dy >= 0 and dx < width and dy < height
+
+    def reset(self):
+        self.current_coord = self.initial_coord
+        self.last_coord = None
+        
+        self.dir_index = 0 if self.deterministic else self._random.randint(0, len(self.possible_directions))
+        self.direction: Direction = self.possible_directions[self.dir_index]

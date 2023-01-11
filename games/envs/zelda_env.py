@@ -87,6 +87,8 @@ class ZeldaEnv(gym.Env):
 
         observation = self._rep.get_observation()
         observation["heatmap"] = self._heatmap.copy()
+
+        self._map = self._rep._map.copy()
         return observation
 
     def get_map(self):
@@ -186,12 +188,10 @@ class ZeldaEnv(gym.Env):
 
         for c in self.creatures:
             c.step()
-            
+
         astar = Astar(self._rep._map)
         print(astar.getNextMove())
         astar.step()
-        
-       
 
     """
     Render the current state of the environment
