@@ -10,7 +10,9 @@ class Representation:
     """
     The base constructor where all the representation variable are defined with default values
     """
-    def __init__(self):
+    def __init__(self, props, gen_type):
+        self.props = props
+        self.gen_type = gen_type
         self._random_start = True
         self._map = None
         self._old_map = None
@@ -41,7 +43,8 @@ class Representation:
     """
     def reset(self, width, height, prob):
         if self._random_start or self._old_map is None:
-            self.map_generator = CellularAutomata(self._random, width, height)
+            gen_algo = CellularAutomata if self.gen_type == 'CA' else FractorMapGenerator
+            self.map_generator = gen_algo(self._random, width, height, self.props)
             
             # self._map = gen_random_map(self._random, width, height, prob)
             self._map = self.map_generator.getMap()

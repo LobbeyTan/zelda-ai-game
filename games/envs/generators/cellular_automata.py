@@ -5,8 +5,8 @@ from games.envs.generators.map_generator import MapGenerator
 
 class CellularAutomata(MapGenerator):
 
-    def __init__(self, rand: np.random, width: int, height: int, p=0.55) -> None:
-        super().__init__(rand, width, height, p)
+    def __init__(self, rand: np.random, width: int, height: int, props: dict, p=0.55) -> None:
+        super().__init__(rand, width, height, props, p)
         self.X = self.rand.choice([0, 1], size=(width, height), p=[1-p, p])
 
     def generateMap(self) -> np.ndarray:

@@ -5,8 +5,8 @@ import numpy as np
 
 class FractorMapGenerator(MapGenerator):
 
-    def __init__(self, rand: np.random, width: int, height: int, p=0.55) -> None:
-        super().__init__(rand, width, height, p)
+    def __init__(self, rand: np.random, width: int, height: int, props: dict, p=0.55) -> None:
+        super().__init__(rand, width, height, props, p)
 
     def generateMap(self) -> np.ndarray:
         img_size = (self.width + self.height) / 2
@@ -53,7 +53,7 @@ class FractorMapGenerator(MapGenerator):
         return X
 
     def saveImg(self, i=0):
-        self.img.save(f'temp_{i}.png')
+        self.img.save(f'temp/temp_{i}.png')
 
     def __pixelate(self, amount):
         img = self.img.copy()

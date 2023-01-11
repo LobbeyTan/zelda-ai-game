@@ -32,9 +32,16 @@ class ZeldaEnv(gym.Env):
         constant in gym_pcgrl.envs.reps.__init__.py
     """
 
-    def __init__(self):
-        self._prob = ZeldaProblem()
-        self._rep = NarrowRepresentation()
+    def __init__(self, width: int, height: int, map_gen='CA', n_spider=0, n_scorpion=0, n_bat=0):
+        self._prob = ZeldaProblem(width, height)
+        self._rep = NarrowRepresentation(
+            gen_type=map_gen,
+            props={
+                'spider': n_spider,
+                'bat': n_bat,
+                'scorpion': n_scorpion,
+            }
+        )
         self.creatures: list[Movable] = []
         self._rep_stats = None
         self._iteration = 0
@@ -190,7 +197,7 @@ class ZeldaEnv(gym.Env):
             c.step()
 
         astar = Astar(self._rep._map)
-        print(astar.getNextMove())
+        # print(astar.getNextMove())
         astar.step()
 
     """

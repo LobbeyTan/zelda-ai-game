@@ -7,12 +7,13 @@ Coord = namedtuple("Coord", ["x", "y"])
 
 class MapGenerator:
 
-    def __init__(self, rand: np.random, width: int, height: int, p: float) -> None:
+    def __init__(self, rand: np.random, width: int, height: int, props: dict, p: float) -> None:
         self.map = None
         self.rand = rand
         self.width = width
         self.height = height
         self.area = width * height
+        self.props = props
         self.p = p
 
     def generateMap(self) -> np.ndarray:
@@ -88,8 +89,8 @@ class MapGenerator:
                 y1 += -1 if dy > 0 else 1
 
             path.append(Coord(x1, y1))
-            self.map[x1][y1] = 0 # Change to empty tiles
-            self.fill_adjacent_tile(x1, y1, tile_type=0) # Change adjacent to empty tiles
+            self.map[x1][y1] = 0  # Change to empty tiles
+            self.fill_adjacent_tile(x1, y1, tile_type=0)  # Change adjacent to empty tiles
 
         return path
 
@@ -152,16 +153,16 @@ class MapGenerator:
         self.map[key.x][key.y] = 3
 
         # Populate bat
-        for _ in range(2):
+        for _ in range(self.props['bat']):
             coord = self.getRandomTile()
             self.map[coord.x][coord.y] = 5
 
         # Populate scorpion
-        for _ in range(2):
+        for _ in range(self.props['scorpion']):
             coord = self.getRandomTile()
             self.map[coord.x][coord.y] = 6
 
         # Populate spider
-        for _ in range(2):
+        for _ in range(self.props['spider']):
             coord = self.getRandomTile()
             self.map[coord.x][coord.y] = 7

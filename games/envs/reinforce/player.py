@@ -7,7 +7,7 @@ import os
 
 class Player:
 
-    def __init__(self, n_states, n_actions, rand: np.random, save_dir='/checkpoint'):
+    def __init__(self, n_states, n_actions, rand: np.random, save_dir='/checkpoint', exploration_rate_decay=0.99999975, save_every=500000):
         self.n_states = n_states
         self.n_actions = n_actions
         self.save_dir = save_dir
@@ -18,10 +18,10 @@ class Player:
         self.net.to(self.device)
 
         self.exploration_rate = 1
-        self.exploration_rate_decay = 0.99999975
+        self.exploration_rate_decay = exploration_rate_decay
         self.exploration_rate_min = 0.1
         self.curr_step = 0
-        self.save_every = 5e5
+        self.save_every = save_every
 
         self.memory = deque(maxlen=100000)
         self.batch_size = 32
@@ -94,9 +94,9 @@ class Player:
     def sync_Q_target(self):
         self.net.target.load_state_dict(self.net.online.state_dict())
 
-    def save(self):
+    def save(self, name=None):
         cwd = os.getcwd()
-        fname = f"mario_net_{int(self.curr_step // self.save_every)}.chkpt"
+        fname = f"mario_net_{int(self.curr_step // self.save_every)}.chkpt" if name is None else name
         save_path = os.path.join(cwd, self.save_dir, "model", fname)
 
         try:
@@ -140,11 +140,11 @@ class Player:
         state = torch.tensor(state).to(self.device)
         action_values = self.net(state, model='online')
         action_idx = torch.argmax(action_values, axis=1).item()
-        
+
         return action_idx
-    
+
     def load(self, path):
         save_dict = torch.load(path)
-        
+        self.exploration_rate = save_dict['exploration_rate']
         self.net.load_state_dict(save_dict['model'])
         self.net.eval()

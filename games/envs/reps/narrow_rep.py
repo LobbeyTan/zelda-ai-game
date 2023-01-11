@@ -12,8 +12,8 @@ class NarrowRepresentation(Representation):
     """
     Initialize all the parameters used by that representation
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, props, gen_type):
+        super().__init__(props, gen_type)
         self._random_tile = True
 
     """

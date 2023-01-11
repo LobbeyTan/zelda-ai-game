@@ -17,8 +17,8 @@ Episode = namedtuple('Episode', ['next_state', 'reward', 'done'])
 
 class ZeldaReinforceEnv(ZeldaEnv):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, width: int, height: int, map_gen='CA', n_spider=0, n_scorpion=0, n_bat=0):
+        super().__init__(width, height, map_gen, n_spider, n_scorpion, n_bat)
 
     def reset(self, new_map=False):
         if new_map:
@@ -58,13 +58,10 @@ class ZeldaReinforceEnv(ZeldaEnv):
         else:
             if next_pos == self.key:
                 self.key = None
-                reward = 0.7
+                reward = 1
             elif next_pos == self.door:
-                if self.key is not None:
-                    reward = -0.5
-                else:
-                    self.door = None
-                    reward = 1
+                self.door = None
+                reward = 1
             elif next_pos in [c.current_coord for c in self.creatures]:
                 reward = -1
                 eaten_by_creature = True
@@ -77,7 +74,7 @@ class ZeldaReinforceEnv(ZeldaEnv):
 
         # Is game over if eaten by creature or completed the game
         done = eaten_by_creature or (self.key is None and self.door is None)
-        
+
         return Episode(self.state.copy(), reward, done)
 
     def get_tile_coords(self, tile_type=0) -> Coord:
@@ -91,4 +88,4 @@ class ZeldaReinforceEnv(ZeldaEnv):
         w = self._prob._width
         h = self._prob._height
 
-        return x >= 0 and y >= 0 and x < w and y < h and self.state[x][y] != 1
+        return x >= 0 and y >= 0 and x < w and y < h and self.state[x][y] != 1 and not (self.key is not None and self.state[x][y] == 4)
