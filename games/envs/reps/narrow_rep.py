@@ -137,6 +137,6 @@ class NarrowRepresentation(Representation):
             x_graphics.putpixel((y,1),(255,0,0,255))
             x_graphics.putpixel((y,tile_size-2),(255,0,0,255))
             x_graphics.putpixel((y,tile_size-1),(255,0,0,255))
-        lvl_image.paste(x_graphics, ((self._x+border_size[0])*tile_size, (self._y+border_size[1])*tile_size,
-                                        (self._x+border_size[0]+1)*tile_size,(self._y+border_size[1]+1)*tile_size), x_graphics)
+        # lvl_image.paste(x_graphics, ((self._x+border_size[0])*tile_size, (self._y+border_size[1])*tile_size,
+        #                                 (self._x+border_size[0]+1)*tile_size,(self._y+border_size[1]+1)*tile_size), x_graphics)
         return lvl_image

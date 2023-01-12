@@ -1,0 +1,15 @@
+{
+  "map_gen": "CA",
+  "width": 5,
+  "height": 5,
+  "n_spider": 0,
+  "n_scorpion": 0,
+  "n_bat": 1,
+  "seed": 2023,
+  "delay": 0.25,
+  "train": 0,
+  "model_path": "checkpoint/train_5x5_1_bat/model/mario_net_1.chkpt",
+  "n_episode": 40000,
+  "save_every": 500000,
+  "exp_decay_rate": 0.99999975
+}
