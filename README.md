@@ -30,6 +30,24 @@ This is a python implementation of Zelda game environment to showcase the AI tec
  </tr>
 </table>
 
+### A-Star Zelda Solver
+
+<table>
+ <tr>
+    <td><img src='./images/astar_001.gif'></td>
+    <td><img src='./images/astar_002.gif'></td>
+ </tr>
+</table>
+
+### DDQN Zelda Solver
+
+<table>
+ <tr>
+    <td><img src='./images/ddqn_001.gif'></td>
+    <td><img src='./images/ddqn_002.gif'></td>
+ </tr>
+</table>
+
 ## Prerequisites
 
 - Linux or Windows (MacOs untested)
