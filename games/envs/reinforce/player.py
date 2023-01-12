@@ -143,8 +143,8 @@ class Player:
 
         return action_idx
 
-    def load(self, path):
-        save_dict = torch.load(path)
+    def load(self, path, device):
+        save_dict = torch.load(path, map_location=torch.device(device))
         self.exploration_rate = save_dict['exploration_rate']
         self.net.load_state_dict(save_dict['model'])
         self.net.eval()

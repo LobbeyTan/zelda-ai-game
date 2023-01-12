@@ -68,7 +68,7 @@ if __name__ == '__main__':
                     exploration_rate_decay=args.exp_decay_rate, save_every=args.save_every)
 
     if args.model_path is not None:
-        player.load(args.model_path)
+        player.load(args.model_path, device="cuda" if use_cuda else "cpu")
 
     logger = MetricLogger(save_dir)
 
