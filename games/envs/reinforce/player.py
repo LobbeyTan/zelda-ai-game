@@ -96,7 +96,7 @@ class Player:
 
     def save(self, name=None):
         cwd = os.getcwd()
-        fname = f"mario_net_{int(self.curr_step // self.save_every)}.chkpt" if name is None else name
+        fname = f"zelda_net_{int(self.curr_step // self.save_every)}.chkpt" if name is None else name
         save_path = os.path.join(cwd, self.save_dir, "model", fname)
 
         try:

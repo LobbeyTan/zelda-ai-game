@@ -110,4 +110,4 @@ if __name__ == '__main__':
         if (e+1) % 20 == 0:
             logger.record(episode=e+1, epsilon=player.exploration_rate, step=player.curr_step)
 
-    player.save("mario_net_trained.chkpt")
+    player.save("zelda_net_trained.chkpt")

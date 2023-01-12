@@ -8,7 +8,7 @@
   "seed": 2023,
   "delay": 0.25,
   "train": 0,
-  "model_path": "checkpoint/train_5x5_1_bat/model/mario_net_1.chkpt",
+  "model_path": "checkpoint/train_5x5_1_bat/model/zelda_net_1.chkpt",
   "n_episode": 40000,
   "save_every": 500000,
   "exp_decay_rate": 0.99999975

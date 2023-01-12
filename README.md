@@ -100,9 +100,9 @@ python ddqn.py --train=1 --width=16 --height=16 --n_bat=2
 ### Play the game with pretrained DDQN model
 
 ```bash
-python ddqn.py --train=0 --model_path="example/5x5/mario_net_trained.chkpt" --param_path="example/5x5/param.json"
+python ddqn.py --train=0 --model_path="example/5x5/zelda_net_trained.chkpt" --param_path="example/5x5/param.json"
 ```
 
 ```bash
-python ddqn.py --train=0 --model_path="example/16x16/mario_net_trained.chkpt" --param_path="example/16x16/param.json"
+python ddqn.py --train=0 --model_path="example/16x16/zelda_net_trained.chkpt" --param_path="example/16x16/param.json"
 ```
