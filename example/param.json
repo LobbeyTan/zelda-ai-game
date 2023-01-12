@@ -1,0 +1,16 @@
+{
+    "map_gen": "CA",
+    "width": 16,
+    "height": 16,
+    "n_spider": 1,
+    "n_scorpion": 1,
+    "n_bat": 1,
+    "seed": 2023,
+    "delay": 0.25,
+    "train": 1,
+    "model_path": null,
+    "param_path": null,
+    "n_episode": 40000,
+    "save_every": 500000,
+    "exp_decay_rate": 0.99999975
+}
