@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--width', type=int, default=64, help="The width of the map")
     parser.add_argument('--height', type=int, default=64, help="The height of the map")
+    parser.add_argument('--show_grid', action='store_true', help="The height of the map")
     parser.add_argument('--n_spider', type=int, default=6, help="Number of spiders")
     parser.add_argument('--n_scorpion', type=int, default=6, help="Number of scorpions")
     parser.add_argument('--n_bat', type=int, default=6, help="Number of bats")
@@ -23,7 +24,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     print(json.dumps(vars(args), indent=4))
 
-    env = ZeldaEnv(args.width, args.height, args.map_gen, args.n_spider, args.n_scorpion, args.n_bat)
+    env = ZeldaEnv(args.width, args.height, args.map_gen, args.n_spider, args.n_scorpion, args.n_bat, args.show_grid)
     env.seed(args.seed)
 
     obs = env.reset()

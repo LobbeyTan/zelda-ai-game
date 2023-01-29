@@ -32,9 +32,10 @@ class ZeldaEnv(gym.Env):
         constant in gym_pcgrl.envs.reps.__init__.py
     """
 
-    def __init__(self, width: int, height: int, map_gen='CA', n_spider=0, n_scorpion=0, n_bat=0):
+    def __init__(self, width: int, height: int, map_gen='CA', n_spider=0, n_scorpion=0, n_bat=0, show_grid=False):
         self._prob = ZeldaProblem(width, height)
         self._rep = NarrowRepresentation(
+            show_grid=show_grid,
             gen_type=map_gen,
             props={
                 'spider': n_spider,

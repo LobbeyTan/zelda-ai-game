@@ -12,8 +12,9 @@ class NarrowRepresentation(Representation):
     """
     Initialize all the parameters used by that representation
     """
-    def __init__(self, props, gen_type):
+    def __init__(self, props, gen_type, show_grid=False):
         super().__init__(props, gen_type)
+        self.show_grid = show_grid
         self._random_tile = True
 
     """
@@ -121,22 +122,37 @@ class NarrowRepresentation(Representation):
         lvl_image (img): the current level_image without modifications
         tile_size (int): the size of tiles in pixels used in the lvl_image
         border_size ((int,int)): an offeset in tiles if the borders are not part of the level
+        line_width (int): width of the border
+        color (int, int, int, int): RGBA color of border
 
     Returns:
         img: the modified level image
     """
-    def render(self, lvl_image, tile_size, border_size):
+    def render(self, lvl_image: Image.Image, tile_size, border_size, line_width=1, color=(255,255,255,255)):
+        
         x_graphics = Image.new("RGBA", (tile_size,tile_size), (0,0,0,0))
         for x in range(tile_size):
-            x_graphics.putpixel((0,x),(255,0,0,255))
-            x_graphics.putpixel((1,x),(255,0,0,255))
-            x_graphics.putpixel((tile_size-2,x),(255,0,0,255))
-            x_graphics.putpixel((tile_size-1,x),(255,0,0,255))
+            for w in range(line_width):
+                x_graphics.putpixel((w, x),color)
+                x_graphics.putpixel((tile_size-w-1, x),color)
+            
         for y in range(tile_size):
-            x_graphics.putpixel((y,0),(255,0,0,255))
-            x_graphics.putpixel((y,1),(255,0,0,255))
-            x_graphics.putpixel((y,tile_size-2),(255,0,0,255))
-            x_graphics.putpixel((y,tile_size-1),(255,0,0,255))
+            for w in range(line_width):
+                x_graphics.putpixel((y, w),color)
+                x_graphics.putpixel((y, tile_size-w-1),color)
+            
+        width, height = self._map.shape
+        
+        if self.show_grid:
+            for x in range(width):
+                for y in range(height):
+                    lvl_image.paste(x_graphics, (
+                        (x+border_size[0]) * tile_size, 
+                        (y+border_size[1]) * tile_size, 
+                        (x+border_size[0] + 1) * tile_size,
+                        (y+border_size[1] + 1) * tile_size
+                    ), x_graphics)
+        
         # lvl_image.paste(x_graphics, ((self._x+border_size[0])*tile_size, (self._y+border_size[1])*tile_size,
         #                                 (self._x+border_size[0]+1)*tile_size,(self._y+border_size[1]+1)*tile_size), x_graphics)
         return lvl_image
