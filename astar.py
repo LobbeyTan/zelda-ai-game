@@ -35,4 +35,6 @@ if __name__ == '__main__':
 
             time.sleep(args.delay)
         except:
+            score = env.get_score()
+            print("Total Score:", score)
             break

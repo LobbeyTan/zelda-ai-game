@@ -21,6 +21,7 @@ class ZeldaReinforceEnv(ZeldaEnv):
         super().__init__(width, height, map_gen, n_spider, n_scorpion, n_bat)
 
     def reset(self, new_map=False):
+        self._total_steps = 0
         if new_map:
             super().reset()
 
@@ -42,6 +43,8 @@ class ZeldaReinforceEnv(ZeldaEnv):
         return self.state.copy()
 
     def step(self, action) -> Episode:
+        self._total_steps += 1
+
         for c in self.creatures:
             c.step()
 
@@ -76,11 +79,6 @@ class ZeldaReinforceEnv(ZeldaEnv):
         done = eaten_by_creature or (self.key is None and self.door is None)
 
         return Episode(self.state.copy(), reward, done)
-
-    def get_tile_coords(self, tile_type=0) -> Coord:
-        rows, cols = np.where(self._rep._map == tile_type)
-
-        return [Coord(x, y) for x, y in zip(rows, cols)]
 
     def is_valid_action(self, action):
         x = self.player.x + ACTION_MAP[action][0]

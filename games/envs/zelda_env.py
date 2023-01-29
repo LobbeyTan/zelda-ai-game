@@ -46,6 +46,8 @@ class ZeldaEnv(gym.Env):
         self._rep_stats = None
         self._iteration = 0
         self._changes = 0
+        self._total_steps = 0
+        self.player = 0
         self._max_changes = max(int(0.2 * self._prob._width * self._prob._height), 1)
         self._max_iterations = self._max_changes * self._prob._width * self._prob._height
         self._heatmap = np.zeros((self._prob._height, self._prob._width))
@@ -85,6 +87,7 @@ class ZeldaEnv(gym.Env):
     def reset(self):
         self._changes = 0
         self._iteration = 0
+        self._total_steps = 0
         self._rep.reset(self._prob._width, self._prob._height, get_int_prob(self._prob._prob, self._prob.get_tile_types()))
         self.initialize_creatures()
 
@@ -96,10 +99,34 @@ class ZeldaEnv(gym.Env):
         observation["heatmap"] = self._heatmap.copy()
 
         self._map = self._rep._map.copy()
+        self.player = self.get_tile_coords(2)[0]
         return observation
+
+    def get_score(self):
+        print("Steps:", self._total_steps)
+        key = self.get_tile_coords(3)
+        door = self.get_tile_coords(4)
+
+        return self._total_steps * -0.5 + (1 / (self.manhattan_distance([self.player], key) + 1)) * 50 + (1 / (self.manhattan_distance([self.player], door) + 1)) * 100
+
+    def manhattan_distance(self, pos_1: list[Coord], pos_2: list[Coord]):
+        if len(pos_1) == 0 or len(pos_2) == 0:
+            return 0
+
+        total_distance = 0
+
+        for c1 in pos_1:
+            total_distance += sum([abs(c1.x - c2.x) + abs(c1.y - c2.y) for c2 in pos_2]) / len(pos_2)
+
+        return total_distance / len(pos_1)
 
     def get_map(self):
         return self._rep._map
+
+    def get_tile_coords(self, tile_type=0) -> Coord:
+        rows, cols = np.where(self._rep._map == tile_type)
+
+        return [Coord(x, y) for x, y in zip(rows, cols)]
 
     def initialize_creatures(self):
         _map = self.get_map()
@@ -191,6 +218,7 @@ class ZeldaEnv(gym.Env):
         return observation, reward, done, info
 
     def run(self):
+        self._total_steps += 1
         self._rep._map[self._rep._map == 8] = 0
 
         for c in self.creatures:
@@ -199,6 +227,10 @@ class ZeldaEnv(gym.Env):
         astar = Astar(self._rep._map)
         # print(astar.getNextMove())
         astar.step()
+
+        next_player_coord = self.get_tile_coords(2)
+        if len(next_player_coord) != 0:
+            self.player = next_player_coord[0]
 
     """
     Render the current state of the environment

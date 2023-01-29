@@ -102,6 +102,8 @@ if __name__ == '__main__':
 
             # Check if end of game
             if done:
+                score = env.get_score()
+                print("Total Score:", score)
                 state = env.reset()
                 break
 
