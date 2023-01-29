@@ -108,7 +108,15 @@ class ZeldaEnv(gym.Env):
         key = self.get_tile_coords(3)
         door = self.get_tile_coords(4)
 
-        return self._total_steps * -0.5 + (1 / (self.manhattan_distance([self.player], key) + 1)) * 50 + (1 / (self.manhattan_distance([self.player], door) + 1)) * 100
+        loss = len(key) != 0 or len(door) != 0
+
+        key_reward = (1 / (self.manhattan_distance([self.player], key) + 1)) * 50
+        door_reward = (1 / (self.manhattan_distance([self.player], door) + 1)) * 100
+        loss_penalty = int(loss) * - 100
+
+        score = self._total_steps * -0.5 + key_reward + door_reward + loss_penalty
+
+        return score
 
     def manhattan_distance(self, pos_1: list[Coord], pos_2: list[Coord]):
         if len(pos_1) == 0 or len(pos_2) == 0:
